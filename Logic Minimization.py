@@ -92,8 +92,6 @@ def Minimize(minterms,dontcares):
             break
         l1=m1[::]
         l2=m2[::]
-    print(implicants)
-    print(mincover)
     ok=False
     implicants.reverse()
     mincover.reverse()
@@ -207,8 +205,8 @@ while True:
 minimal=Minimize(minterms,dontcares)
 function=""
 num_terms=len(minimal)
-if minimal=="_"*num_terms:
-    s="1"
+if minimal[0]=="_"*num:
+    function+="1"
 else:
     for i in range(num_terms):
         term=minimal[i]
@@ -221,7 +219,7 @@ else:
                     function+="'"
         if i<num_terms-1:
             function+=" + "
-print("Minimized Boolean Function:",function)
+print("\nMinimized Boolean Function: F =",function)
                 
 
     
