@@ -51,7 +51,6 @@ def Minimize(minterms,dontcares):
         j=0
         while i<n:
             while j<n :
-                #print(1)
                 if l1[j].count('1')==l1[i].count('1'):          #Constructing the Prime Implicant Table
                     j+=1
                     if j<n:
@@ -83,9 +82,6 @@ def Minimize(minterms,dontcares):
                 else:
                     j=num1
                     i+=1
-        print(l1)
-        print(l2)
-        print(l3)
         num1=0
         for i in range(n):
             if not(l3[i]):
@@ -113,14 +109,9 @@ def Minimize(minterms,dontcares):
         for i in range(ch):                  
             l0=[]
             for j in range(n):
-                print("LST[j]: ",lst[j])
-                print("Mincover[i]: ",mincover[i])
-                print(lst[j] in mincover[i])
                 l0.append(lst[j] in mincover[i])
             l1.append(l0)
         l2=Transpose(l1)
-        print("L1: ",l1)
-        print("L2: ",l2)
         j=0
         while j<len(lst):
             if l2[j].count(True)==1:               #Picking the Essential Prime Implicants
@@ -128,12 +119,8 @@ def Minimize(minterms,dontcares):
                 a=0
                 while a<len(lst):
                     if lst[a] in mincover[i]:
-                        print("a = ",a)
-                        print("i = ",i)
                         del lst[a]
                         del l2[a]
-                        print(lst)
-                        print(l2)
                     else:
                         a+=1
                 l1=Transpose(l2)
@@ -143,11 +130,6 @@ def Minimize(minterms,dontcares):
                 if l1!=[]:
                     del l1[i]
                 l2=Transpose(l1)
-                print(lst)
-                print(minimized)
-                print(implicants)
-                print(mincover)
-                print(l1)
                 j=0
                 num1=1
             else:
@@ -156,15 +138,12 @@ def Minimize(minterms,dontcares):
         l2=Transpose(l1)
         for i in range(len(mincover)):
             mincover[i]=list(set(mincover[i])&final)
-        print("Minimized: ",minimized)
         if final!=set():
             ch=len(implicants)
             i=ch-1
             while i>0:
                 j=i-1
                 while j>=0:
-                    print(set(mincover[i]))
-                    print(set(mincover[j]))
                     if set(mincover[i])&set(mincover[j])==set(mincover[i]):    #Removing dominated rows
                         del implicants[i]
                         del mincover[i]
@@ -201,10 +180,7 @@ def Minimize(minterms,dontcares):
                     j-=1
                 if j==-1:
                     i-=1
-    if final==set():
-        print("Poda")
     while final!=set():
-        print("Hi")
         minimized.append(implicants[0])
         final=final-set(mincover[0])
         del implicants[0]
