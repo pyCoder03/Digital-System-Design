@@ -22,6 +22,13 @@ def adjacency(s1,s2):               #To check the adjacency of two implicants
             num+=1
     adj=True if (num==1 and (s1[index]!="_" and s2[index]!="_")) else False
     return adj,index
+def imp(l):
+    n=len(l)
+    c=[]
+    for i in range(n):
+        if l[i]:
+            c.append(i)
+    return set(c)
 def Minimize(minterms,dontcares):
     tot=minterms[::]
     tot.extend(dontcares)
@@ -168,7 +175,7 @@ def Minimize(minterms,dontcares):
             while i>0:
                 j=i-1
                 while j>=0:
-                    if set(l2[i])&set(l2[j])==set(l2[i]):                   #Removing dominating columns
+                    if imp(l2[i])&imp(l2[j])==imp(l2[i]):                   #Removing dominating columns
                         del l2[i]
                         del lst[i]        
                         num1=1
