@@ -214,7 +214,7 @@ function=""
 num_terms=len(minimal)
 if minimal[0]=="_"*num:
     function+="1"
-elif minimal=[]:
+elif minimal==[]:
     function+="0"
 else:
     for i in range(num_terms):
