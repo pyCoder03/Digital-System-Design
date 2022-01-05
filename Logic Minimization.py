@@ -207,6 +207,7 @@ def Minimize(minterms,dontcares):
                     j-=1
                 if j==-1:
                     i-=1
+            l1=Transpose(l2)    
     while final!=set():
         minimized.append(implicants[0])
         final=final-set(mincover[0])
