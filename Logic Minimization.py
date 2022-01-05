@@ -235,10 +235,10 @@ while True:
 minimal=Minimize(minterms,dontcares)
 function=""
 num_terms=len(minimal)
-if minimal[0]=="_"*num:
-    function+="1"
-elif minimal==[]:
+if minimal==[]:
     function+="0"
+elif minimal[0]=="_"*num:
+    function+="1"
 else:
     for i in range(num_terms):
         term=minimal[i]
