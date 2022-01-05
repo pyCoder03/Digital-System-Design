@@ -104,21 +104,37 @@ def Minimize(minterms,dontcares):
     mincover.reverse()
     final=set(minterms)                             #Constructing the Cover Table
     lst=minterms[::]
+    for i in range(len(implicants)):
+        mincover[i]=list(set(mincover[i])&final)
+    l1=[]
+    for i in range(len(implicants)):                  
+        l0=[]
+        for j in range(len(lst)):
+            l0.append(lst[j] in mincover[i])
+        l1.append(l0)
+    ch=1 
+    while ch:
+        ch=0 
+        for i in range(len(implicants)-1):
+            if l1[i].count(True)<l1[i+1].count(True):
+                l1[i],l1[i+1]=l1[i+1],l1[i]
+                implicants[i],implicants[i+1]=implicants[i+1],implicants[i]
+                mincover[i],mincover[i+1]=mincover[i+1],mincover[i]
+                ch=1
     minimized=[]
     num1=1
     while num1:
         num1=0
         ch=len(implicants)
         n=len(lst)
-        l1=[]
-        for i in range(ch):                  
-            l0=[]
-            for j in range(n):
-                l0.append(lst[j] in mincover[i])
-            l1.append(l0)
+        # print("LST: ",lst)
         l2=Transpose(l1)
+        # print(implicants)
+        # print(l1)
         j=0
+        # print("Picking EPIs")
         while j<len(lst):
+            # print(j)
             if l2[j].count(True)==1:               #Picking the Essential Prime Implicants
                 i=l2[j].index(True)
                 a=0
@@ -128,6 +144,8 @@ def Minimize(minterms,dontcares):
                         del l2[a]
                     else:
                         a+=1
+                # print(implicants)
+                # print(l1)
                 l1=Transpose(l2)
                 minimized.append(implicants[i])
                 del implicants[i]
@@ -140,12 +158,13 @@ def Minimize(minterms,dontcares):
             else:
                 j+=1
         final=set(lst)
-        l2=Transpose(l1)
-        for i in range(len(mincover)):
+        for i in range(len(implicants)):
             mincover[i]=list(set(mincover[i])&final)
+        l2=Transpose(l1)
         if final!=set():
             ch=len(implicants)
             i=ch-1
+            # print("Domirows")
             while i>0:
                 j=i-1
                 while j>=0:
@@ -153,6 +172,8 @@ def Minimize(minterms,dontcares):
                         del implicants[i]
                         del mincover[i]
                         del l1[i]
+                        # print(implicants)
+                        # print(l1)
                         num1=1
                         i-=1
                         j=i-1
@@ -172,6 +193,7 @@ def Minimize(minterms,dontcares):
             final=set(lst)
             ch=len(lst)
             i=ch-1
+            # print("Columns")
             while i>0:
                 j=i-1
                 while j>=0:
