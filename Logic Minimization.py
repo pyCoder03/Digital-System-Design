@@ -215,14 +215,14 @@ def Minimize(minterms,dontcares):
         del mincover[0]
     return minimized
 var=tuple()
-print("LOGIC MINIMIZATION OF BOOLEAN FUNCTION (Uses Quine McCluskey Method)\n")
+print("LOGIC MINIMIZATION OF BOOLEAN FUNCTION (Uses Quine-McCluskey Method)\n")
 num=int(input("Enter no. of variables in the Boolean function: "))
 lim=pow(2,num)
-print("Enter the variables (make sure they are in order): ")
+print("\nEnter the variables (make sure they are in order): ")
 for i in range(num):
     a=input()
     var+=(a,)
-print("Enter list of minterms to be covered (Enter",lim,"to terminate):")
+print("\nEnter list of minterms to be covered (Enter",lim,"to terminate):")
 minterms=[]
 dontcares=[]
 while True:
