@@ -123,96 +123,103 @@ def Minimize(minterms,dontcares):
                 ch=1
     minimized=[]
     num1=1
+    num2=1
     while num1:
         num1=0
         ch=len(implicants)
         n=len(lst)
-        # print("LST: ",lst)
-        l2=Transpose(l1)
-        # print(implicants)
-        # print(l1)
-        j=0
-        # print("Picking EPIs")
-        while j<len(lst):
-            # print(j)
-            if l2[j].count(True)==1:               #Picking the Essential Prime Implicants
-                i=l2[j].index(True)
-                a=0
-                while a<len(lst):
-                    if lst[a] in mincover[i]:
-                        del lst[a]
-                        del l2[a]
-                    else:
-                        a+=1
-                # print(implicants)
-                # print(l1)
-                l1=Transpose(l2)
-                minimized.append(implicants[i])
-                del implicants[i]
-                del mincover[i]
-                if l1!=[]:
-                    del l1[i]
-                l2=Transpose(l1)
-                j=0
-                num1=1
-            else:
-                j+=1
-        final=set(lst)
-        for i in range(len(implicants)):
-            mincover[i]=list(set(mincover[i])&final)
-        l2=Transpose(l1)
-        if final!=set():
-            ch=len(implicants)
-            i=ch-1
-            # print("Domirows")
-            while i>0:
-                j=i-1
-                while j>=0:
-                    if set(mincover[i])&set(mincover[j])==set(mincover[i]):    #Removing dominated rows
-                        del implicants[i]
-                        del mincover[i]
-                        del l1[i]
-                        # print(implicants)
-                        # print(l1)
-                        num1=1
-                        i-=1
-                        j=i-1
-                        continue
-                    j-=1
-                if j==-1:
-                    i-=1
-            ch=1
+        while num2:
+            num2=0
+            # print("LST: ",lst)
             l2=Transpose(l1)
-            while ch:
-                ch=0
-                for i in range(len(lst)-1):
-                    if l2[i].count(True)>l2[i+1].count(True):
-                        l2[i],l2[i+1]=l2[i+1],l2[i]
-                        lst[i],lst[i+1]=lst[i+1],lst[i]
-                        ch=1
+            # print(implicants)
+            # print(l1)
+            j=0
+            # print("Picking EPIs")
+            while j<len(lst):
+                # print(j)
+                if l2[j].count(True)==1:               #Picking the Essential Prime Implicants
+                    i=l2[j].index(True)
+                    a=0
+                    while a<len(lst):
+                        if lst[a] in mincover[i]:
+                            del lst[a]
+                            del l2[a]
+                        else:
+                            a+=1
+                    # print(implicants)
+                    # print(l1)
+                    l1=Transpose(l2)
+                    minimized.append(implicants[i])
+                    del implicants[i]
+                    del mincover[i]
+                    if l1!=[]:
+                        del l1[i]
+                    l2=Transpose(l1)
+                    j=0
+                    num2=1
+                else:
+                    j+=1
             final=set(lst)
-            ch=len(lst)
-            i=ch-1
-            # print("Columns")
-            while i>0:
-                j=i-1
-                while j>=0:
-                    if imp(l2[i])&imp(l2[j])==imp(l2[i]):                   #Removing dominating columns
-                        del l2[i]
-                        del lst[i]        
-                        num1=1
+            for i in range(len(implicants)):
+                mincover[i]=list(set(mincover[i])&final)
+            l2=Transpose(l1)
+            if final!=set():
+                ch=len(implicants)
+                i=ch-1
+                # print("Domirows")
+                while i>0:
+                    j=i-1
+                    while j>=0:
+                        if set(mincover[i])&set(mincover[j])==set(mincover[i]):    #Removing dominated rows
+                            del implicants[i]
+                            del mincover[i]
+                            del l1[i]
+                            # print(implicants)
+                            # print(l1)
+                            num2=1
+                            i-=1
+                            j=i-1
+                            continue
+                        j-=1
+                    if j==-1:
                         i-=1
-                        j=i-1
-                        continue
-                    j-=1
-                if j==-1:
-                    i-=1
-            l1=Transpose(l2)    
-    while final!=set():
-        minimized.append(implicants[0])
-        final=final-set(mincover[0])
-        del implicants[0]
-        del mincover[0]
+                ch=1
+                l2=Transpose(l1)
+                while ch:
+                    ch=0
+                    for i in range(len(lst)-1):
+                        if l2[i].count(True)>l2[i+1].count(True):
+                            l2[i],l2[i+1]=l2[i+1],l2[i]
+                            lst[i],lst[i+1]=lst[i+1],lst[i]
+                            ch=1
+                final=set(lst)
+                ch=len(lst)
+                i=ch-1
+                # print("Columns")
+                while i>0:
+                    j=i-1
+                    while j>=0:
+                        if imp(l2[i])&imp(l2[j])==imp(l2[i]):                   #Removing dominating columns
+                            del l2[i]
+                            del lst[i] 
+                            num2=1
+                            i-=1
+                            j=i-1
+                            continue
+                        j-=1
+                    if j==-1:
+                        i-=1
+                l1=Transpose(l2)    
+        if final!=set():
+            minimized.append(implicants[0])
+            final=final-set(mincover[0])
+            lst=list(final)
+            del implicants[0]
+            del mincover[0]
+            del l1[0]
+            l2=Transpose(l1)
+            num1=1
     return minimized
 var=tuple()
 print("LOGIC MINIMIZATION OF BOOLEAN FUNCTION (Uses Quine-McCluskey Method)\n")
