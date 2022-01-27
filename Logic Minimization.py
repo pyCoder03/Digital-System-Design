@@ -244,27 +244,53 @@ while True:
         break
     dontcares.append(a)
 minimal=Minimize(minterms,dontcares)
-function=""
-num_terms=len(minimal)
+f_sop=""
+min_not=list(set(range(0,lim))-set(minterms)-set(dontcares))
+minimal1=Minimize(min_not,dontcares)
+f_pos=""
+ch=1 
+while ch:
+    ch=0 
+    for i in range(len(minimal1)-1):
+        if minimal1[i].count('_')<minimal1[i+1].count('_'):
+            minimal1[i],minimal1[i+1]=minimal1[i+1],minimal1[i]
+            ch=1
 if minimal==[]:
-    function+="0"
+    f_sop+="0"
+    f_pos+="0"
 elif minimal[0]=="_"*num:
-    function+="1"
+    f_sop+="1"
+    f_pos+="1"
 else:
+    num_terms=len(minimal)
     for i in range(num_terms):
         term=minimal[i]
         for j in range(len(term)):
             if term[j]=="_":
                 continue
             else:
-                function+=var[j]
+                f_sop+=var[j]
                 if term[j]=="0":
-                    function+="'"
+                    f_sop+="'"
         if i<num_terms-1:
-            function+=" + "
-print("\nMinimized Boolean Function: F =",function)
-                
+            f_sop+=" + "
+    for term in minimal1:
+        if term.count("_")<num-1 and minimal1!=[term]:
+            f_pos+="("
+        for j in range(num):
+            if term[j]=="_":
+                continue
+            else:
+                f_pos+=var[j]
+                if term[j]=="1":
+                    f_pos+="'"
+                if j<num-1 and term[j+1::]!=(num-j-1)*"_":
+                    f_pos+=" + "
+        if term.count("_")<num-1 and minimal1!=[term]:
+            f_pos+=")"
+print("\nMinimized Boolean Function: \n\nF = {} (SOP)\n  = {} (POS)".format(f_sop,f_pos))
 
     
     
     
+
