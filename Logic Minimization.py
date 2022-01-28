@@ -1,3 +1,4 @@
+import numpy as np
 def Transpose(l):
     l2=list(zip(*l))
     l1=[]
@@ -112,15 +113,6 @@ def Minimize(minterms,dontcares):
         for j in range(len(lst)):
             l0.append(lst[j] in mincover[i])
         l1.append(l0)
-    ch=1 
-    while ch:
-        ch=0 
-        for i in range(len(implicants)-1):
-            if l1[i].count(True)<l1[i+1].count(True):
-                l1[i],l1[i+1]=l1[i+1],l1[i]
-                implicants[i],implicants[i+1]=implicants[i+1],implicants[i]
-                mincover[i],mincover[i+1]=mincover[i+1],mincover[i]
-                ch=1
     minimized=[]
     num1=1
     num2=1
@@ -130,10 +122,7 @@ def Minimize(minterms,dontcares):
         n=len(lst)
         while num2:
             num2=0
-            # print("LST: ",lst)
             l2=Transpose(l1)
-            # print(implicants)
-            # print(l1)
             j=0
             # print("Picking EPIs")
             while j<len(lst):
@@ -147,8 +136,6 @@ def Minimize(minterms,dontcares):
                             del l2[a]
                         else:
                             a+=1
-                    # print(implicants)
-                    # print(l1)
                     l1=Transpose(l2)
                     minimized.append(implicants[i])
                     del implicants[i]
@@ -160,14 +147,23 @@ def Minimize(minterms,dontcares):
                     num2=1
                 else:
                     j+=1
+            # print(minimized)
             final=set(lst)
             for i in range(len(implicants)):
                 mincover[i]=list(set(mincover[i])&final)
             l2=Transpose(l1)
+            ch=1 
+            while ch:
+                ch=0 
+                for i in range(len(implicants)-1):
+                    if l1[i].count(True)<l1[i+1].count(True):
+                        l1[i],l1[i+1]=l1[i+1],l1[i]
+                        implicants[i],implicants[i+1]=implicants[i+1],implicants[i]
+                        mincover[i],mincover[i+1]=mincover[i+1],mincover[i]
+                        ch=1
             if final!=set():
                 ch=len(implicants)
                 i=ch-1
-                # print("Domirows")
                 while i>0:
                     j=i-1
                     while j>=0:
@@ -175,8 +171,6 @@ def Minimize(minterms,dontcares):
                             del implicants[i]
                             del mincover[i]
                             del l1[i]
-                            # print(implicants)
-                            # print(l1)
                             num2=1
                             i-=1
                             j=i-1
@@ -196,13 +190,12 @@ def Minimize(minterms,dontcares):
                 final=set(lst)
                 ch=len(lst)
                 i=ch-1
-                # print("Columns")
                 while i>0:
                     j=i-1
                     while j>=0:
-                        if imp(l2[i])&imp(l2[j])==imp(l2[i]):                   #Removing dominating columns
+                        if imp(l2[i])&imp(l2[j])==imp(l2[j]):                   #Removing dominating columns
                             del l2[i]
-                            del lst[i] 
+                            del lst[i]
                             num2=1
                             i-=1
                             j=i-1
@@ -210,7 +203,10 @@ def Minimize(minterms,dontcares):
                         j-=1
                     if j==-1:
                         i-=1
-                l1=Transpose(l2)    
+                l1=Transpose(l2)
+                final=set(lst)
+                for i in range(len(implicants)):
+                    mincover[i]=list(set(mincover[i])&final)
         if final!=set():
             minimized.append(implicants[0])
             final=final-set(mincover[0])
@@ -293,4 +289,5 @@ print("\nMinimized Boolean Function: \n\nF = {} (SOP)\n  = {} (POS)".format(f_so
     
     
     
+
 
