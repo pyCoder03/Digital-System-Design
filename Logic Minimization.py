@@ -1,4 +1,3 @@
-import numpy as np
 def Transpose(l):
     l2=list(zip(*l))
     l1=[]
