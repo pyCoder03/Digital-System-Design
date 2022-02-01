@@ -176,7 +176,7 @@ def Minimize(minterms,dontcares):
                             s1=set(mincover[j])-set(mincover[i])
                             x=0
                             for m1 in range(len(implicants)):
-                                if s1&set(mincover[m1])==s1:
+                                if s1&set(mincover[m1])==s1 and implicants[m1].count('_')>=implicants[j].count('_'):
                                     x+=1 
                             if x>1 and implicants[i].count('_')>implicants[j].count('_') and mincover[i]!=[]:
                                 del implicants[j]
@@ -304,6 +304,9 @@ print("\nMinimized Boolean Function: \n\nF = {} (SOP)\n  = {} (POS)".format(f_so
     
     
     
+
+
+
 
 
 
